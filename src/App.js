@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
-import Search from './containers/Search';
+import Search from '././components/Search/Search';
+import Header from '././components/Header/Header';
 
 class App extends Component {
   render() {
     return (
-      <Search></Search>
+      <React.Fragment>
+        <Header></Header>
+
+       
+      </React.Fragment>
     )
   }
 }

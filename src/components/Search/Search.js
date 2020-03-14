@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import './Search.css';
+import classes from './Search.module.css';
 
 
 class Search extends Component {
     render () {
         return (
-            <input className="search" type="text" 
+            <input className={classes.search} type="text" 
             placeholder="Enter the Company name or Stock sign"></input>
         )
         
