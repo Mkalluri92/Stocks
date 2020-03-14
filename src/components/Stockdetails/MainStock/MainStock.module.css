@@ -1,0 +1,13 @@
+.mainstock {
+    display: inline-block;
+    color: rgb(7, 50, 151);
+    font-size: 15px;
+    font-weight: bold;
+    width: 13%;
+    height: 20%;
+    padding: 10px;
+    margin: 13px;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
