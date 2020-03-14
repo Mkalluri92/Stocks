@@ -8,7 +8,7 @@ class App extends Component {
     return (
       <React.Fragment>
         <Header></Header>
-
+        <Search></Search>
        
       </React.Fragment>
     )

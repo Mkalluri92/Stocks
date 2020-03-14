@@ -1,5 +1,31 @@
 .search {
-    display: block;
-    width: 50%;
-    height: 20%;
+    margin: 0px;
+    height: 100px;
+}
+
+.searchInput {
+    display: inline-block;
+    position: relative;
+    top: 50px;
+    left: 25%;
+    width: 40%;
+    height: 40%;
+    border-radius: 8px;
+    border: 2px solid  rgb(194, 187, 187) ;
+}
+
+::placeholder {
+    font-size: 20px;
+    padding: 12px;
+    color: rgb(204, 197, 197);
+}
+
+.searchIcon {
+    display: inline-block;
+    position: relative;
+    top: 53px;
+    left: 21%;
+    color:  rgb(185, 178, 178);
+    width: 30px;
+    height: 20px;
 }
