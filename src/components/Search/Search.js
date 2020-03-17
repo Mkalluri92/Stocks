@@ -9,7 +9,7 @@ const Search = () => {
     return (
         <div className={classes.search}>
             <input className={classes.searchInput} type="text" 
-            placeholder="Enter the Company name or Stock sign">
+            placeholder="Enter the Company name or Stock symbol">
             </input>
            <FaSearch className={classes.searchIcon}/>
         </div>

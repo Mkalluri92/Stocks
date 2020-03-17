@@ -3,18 +3,18 @@ import MainStock from './MainStock/MainStock';
 
 const StockDetails = (props) => {
     return (
-        <div>
+        <React.Fragment>
             {props.showStock == "main" ? 
-            <div>
-            <MainStock name="PANW"/> 
-            <MainStock name="EGHT"/>
-            <MainStock name="GOLD"/>
-            <MainStock name="AVGO"/>
-            <MainStock name="SILVER"/>
-            <MainStock name="TSLA"/>
-            </div>: 
+            <React.Fragment>
+                <MainStock name="PANW"/> 
+                <MainStock name="EGHT"/>
+                <MainStock name="GOLD"/>
+                <MainStock name="AVGO"/>
+                <MainStock name="SILVER"/>
+                <MainStock name="TSLA"/>
+            </React.Fragment> :
             <h1>hi</h1>}
-        </div>
+        </React.Fragment>
     )
 }
 
