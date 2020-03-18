@@ -16,15 +16,15 @@
     border: 2px solid  rgb(194, 187, 187);
 }
 
-.input {
-    font-size: 15px;
+input[type="text"] {
+    font-size: 24px;
     font-family: 'Merriweather', serif;
-    padding: 12px;
+    padding-left: 12px;
+    color: rgb(37, 37, 37)
 }
 
 ::placeholder {
     font-size: 20px;
-    padding: 12px;
     color: rgb(204, 197, 197);
 }
 
