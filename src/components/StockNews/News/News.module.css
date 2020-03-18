@@ -17,10 +17,10 @@
 .details {
     display: inline-block;
     position: relative;
-    top: -10px;
     margin: 10px;
     width: 70%;
     height: 100%;
+    overflow-y: hidden;
 }
 
 .title {

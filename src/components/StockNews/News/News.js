@@ -13,11 +13,13 @@ const News = (props) => {
                      href={props.url} target="_blank">
                     {props.title}
                 </a>
-                <div className={classes.content}>
-                    {props.content != null ?
-                    props.content.replace(/\[\+[0-9]+.* chars\]/g, "") : 
-                    null}</div>
+                <div className={classes.content} 
+                    dangerouslySetInnerHTML={{__html: props.content != null ?
+                        props.content.replace(/\[\+[0-9]+.* chars\]/g, "") : 
+                        null}}>
+                    
                 </div>
+            </div>
         </div>
     )
 }
