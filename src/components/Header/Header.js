@@ -5,7 +5,7 @@ import classes from './Header.module.css';
 const Header = () => {
     return (
         <div className={classes.header}>
-            <img className={classes.logo} src={logo}></img>
+            <img className={classes.logo} src={logo} alt="logo"></img>
             <h1>Stock Portfolio</h1>
         </div>
     )

@@ -1,9 +1,9 @@
 import React from 'react';
-import classes from './MainStock.module.css';
+import classes from './Stock.module.css';
 import { Sparklines, SparklinesLine } from 'react-sparklines';
 
 //TODO: need to remove in future
-const stockValue = () => {
+const data = () => {
   return {
     'present': (Math.random()*1000).toFixed(3),
     'yesterday': (Math.random()*1000).toFixed(3),
@@ -17,13 +17,11 @@ const stockValue = () => {
     '2012': (Math.random()*1000).toFixed(3),
     '2011': (Math.random()*1000).toFixed(3),
     '2010': (Math.random()*1000).toFixed(3)
-  }
-  
+  };
 }
 
-const MainStock = (props) => {
-
-    const values = stockValue();
+const Stock = (props) => {
+    const values = data();
     var profitOrLoss;
     var graphDetails = [values.present, values.yesterday, values[2019], values[2018],
                         values[2017],values[2016], values[2015], values[2014],
@@ -33,7 +31,8 @@ const MainStock = (props) => {
     
     profitOrLoss = (
         <React.Fragment>
-            <span className={color == "green" ? classes.valueHigh : classes.valueLow}>
+            <span className={color === "green" ? 
+                classes.valueHigh : classes.valueLow}>
                 {'+'+(values.present - values.yesterday).toFixed(2)}
             </span>
             <Sparklines data={graphDetails} >
@@ -43,15 +42,15 @@ const MainStock = (props) => {
     )       
     
     return (
-            <div className={classes.mainstock}>
-                <span className={classes.name}>
-                    {props.name}</span>
-                <span className={classes.value}>
-                    {values.present}
-                </span>
-                {profitOrLoss}
-            </div>
+        <div className={classes.mainstock}>
+            <span className={classes.name}>
+                {props.name}</span>
+            <span className={classes.value}>
+                {values.present}
+            </span>
+            {profitOrLoss}
+        </div>
     )
 }
 
-export default MainStock;
+export default Stock;

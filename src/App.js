@@ -2,15 +2,17 @@ import React, { Component } from 'react';
 import './App.css';
 import Search from './components/Search/Search';
 import Header from './components/Header/Header';
-import StockDetails from './components/StockDetails/StockDetails';
+import Stocks from './components/Stocks/Stocks';
+import StockNews from './components/StockNews/StockNews';
 
 class App extends Component {
   render() {
     return (
       <React.Fragment>
-        <Header></Header>
-        <Search></Search>
-        <StockDetails showStock="main"></StockDetails>
+        <Header />
+        <Search />
+        <Stocks show = {true} />
+        <StockNews />
       </React.Fragment>
     )
   }
