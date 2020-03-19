@@ -4,16 +4,15 @@ import classes from './News.module.css'
 const News = (props) => {
 
     return(
-        <a href={props.url} target="_blank">
+        <a href={props.url}>
             <div className= {classes.headlines}>
                 <img className= {classes.image} 
                     src={props.urlToImage} alt="headline">
                 </img>
                 <div className={classes.details}>
-                    <a className={classes.title} 
-                        href={props.url} target="_blank">
+                    <span className={classes.title}>
                         {props.title}
-                    </a>
+                    </span>
                     <div className={classes.content} 
                         dangerouslySetInnerHTML={{__html: props.content != null ?
                             props.content.replace(/\[\+[0-9]+.* chars\]/g, "") : 

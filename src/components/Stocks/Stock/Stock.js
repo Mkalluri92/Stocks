@@ -1,56 +1,93 @@
-import React from 'react';
+import React, { Component } from 'react';
 import classes from './Stock.module.css';
 import { Sparklines, SparklinesLine } from 'react-sparklines';
+import axios from 'axios';
 
-//TODO: need to remove in future
-const data = () => {
-  return {
-    'present': (Math.random()*1000).toFixed(3),
-    'yesterday': (Math.random()*1000).toFixed(3),
-    '2019': (Math.random()*1000).toFixed(3),
-    '2018': (Math.random()*1000).toFixed(3),
-    '2017': (Math.random()*1000).toFixed(3),
-    '2016': (Math.random()*1000).toFixed(3),
-    '2015': (Math.random()*1000).toFixed(3),
-    '2014': (Math.random()*1000).toFixed(3),
-    '2013': (Math.random()*1000).toFixed(3),
-    '2012': (Math.random()*1000).toFixed(3),
-    '2011': (Math.random()*1000).toFixed(3),
-    '2010': (Math.random()*1000).toFixed(3)
-  };
-}
+class Stock extends Component {
+    constructor(props){
+        super(props);
+    }
 
-const Stock = (props) => {
-    const values = data();
-    var profitOrLoss;
-    var graphDetails = [values.present, values.yesterday, values[2019], values[2018],
-                        values[2017],values[2016], values[2015], values[2014],
-                         values[2013], values[2012], values[2011], values[2010]];
-    
-    const color = (values.present - values.yesterday).toFixed(2) > 0 ? "green" : "red";
-    
-    profitOrLoss = (
-        <React.Fragment>
-            <span className={color === "green" ? 
-                classes.valueHigh : classes.valueLow}>
-                {'+'+(values.present - values.yesterday).toFixed(2)}
-            </span>
-            <Sparklines data={graphDetails} >
-                    <SparklinesLine color={color} />
-            </Sparklines>
-        </React.Fragment>
-    )       
-    
-    return (
-        <div className={classes.mainstock}>
-            <span className={classes.name}>
-                {props.name}</span>
-            <span className={classes.value}>
-                {values.present}
-            </span>
-            {profitOrLoss}
-        </div>
-    )
+    state = {
+        data: null,
+        chartData: null
+    }
+
+    getStocks = async () => {
+        await axios({
+            url: `http://localhost:8080/v1/stock_details?stock=${this.props.name}`,
+            method: 'get'
+        }).then(response => {
+            let chartData = [];
+
+            const dataLength = response.data.chart.result[0].indicators.quote[0].open.length;
+            const numberOfPoints = 50;
+            for(let i = 0; i < numberOfPoints; i ++) {
+                let price = null;
+                let index = 0;
+                while(price == null) {
+                    const arrayIndex = (i + (++index)) * (Math.floor(dataLength / numberOfPoints));
+                    if(arrayIndex > dataLength) {
+                        break;
+                    }
+                    console.log(this.props.name + "--->" + arrayIndex);
+                    price = response.data.chart.result[0].indicators.quote[0]
+                        .open[arrayIndex];
+                }
+                
+                if(price) {
+                    chartData.push(price);
+                }
+            }
+
+            this.setState({
+                data : response,
+                chartData
+            })
+            //console.log(response);
+            console.log(this.state.data.data.chart.result[0].indicators.quote[0].open);
+        }).catch(error => {
+            console.error(error.message);
+        })
+    };
+
+    componentDidMount() {
+        this.getStocks();
+    }
+
+    render() {
+        let stock = null;
+        let color;
+        if(this.state.data !== null) {
+            const differenceFromYesterday = this.state.data.data.chart.result[0].meta.regularMarketPrice - 
+                this.state.data.data.chart.result[0].meta.chartPreviousClose;
+            color = differenceFromYesterday > 0 ? "green": "red";
+
+            stock = <React.Fragment>
+                <span className={classes.value}>
+                    {this.state.data.data.chart.result[0].meta.regularMarketPrice}
+                </span>
+                <span className={differenceFromYesterday > 0 ? 
+                        classes.valueHigh : classes.valueLow}>
+                    {+(differenceFromYesterday).toFixed(4)}
+                </span>
+                <span>
+                    <Sparklines
+                            data={this.state.chartData}>
+                        <SparklinesLine color={color} />
+                    </Sparklines>
+                </span>
+            </React.Fragment>
+        }
+
+        return (
+            <div className={classes.mainstock}>
+                <span className={classes.name}>
+                    {this.props.name}</span>
+                    {stock}
+            </div>
+        )
+    }
 }
 
 export default Stock;
