@@ -30,7 +30,6 @@ class Stock extends Component {
                     if(arrayIndex > dataLength) {
                         break;
                     }
-                    console.log(this.props.name + "--->" + arrayIndex);
                     price = response.data.chart.result[0].indicators.quote[0]
                         .open[arrayIndex];
                 }
@@ -43,8 +42,7 @@ class Stock extends Component {
             this.setState({
                 data : response,
                 chartData
-            })
-            //console.log(response);
+            });
             console.log(this.state.data.data.chart.result[0].indicators.quote[0].open);
         }).catch(error => {
             console.error(error.message);
@@ -53,6 +51,23 @@ class Stock extends Component {
 
     componentDidMount() {
         this.getStocks();
+        setInterval(() => {
+            var date = new Date();
+            if((date.getHours() > 7 && date.getMinutes() > 0) && 
+                    (date.getHours() < 13 && date.getMinutes() > 0)){
+                this.getStocks();
+            }
+        }, 10000);
+    }
+
+    shouldComponentUpdate(nextProps, nextState){
+        if(nextState == null || this.state.data == null) {
+                return true;
+        }
+        if(nextState.data.data.chart.result[0].timestamp.length === this.state.data.data.chart.result[0].timestamp.length){
+            return false
+        } 
+        return true;
     }
 
     render() {
@@ -69,7 +84,7 @@ class Stock extends Component {
                 </span>
                 <span className={differenceFromYesterday > 0 ? 
                         classes.valueHigh : classes.valueLow}>
-                    {+(differenceFromYesterday).toFixed(4)}
+                    {(differenceFromYesterday).toFixed(2)}
                 </span>
                 <span>
                     <Sparklines
