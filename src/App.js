@@ -39,7 +39,8 @@ class App extends Component {
     return (
       <React.Fragment>
         <Header />
-        <Search change={this.enterStockName} handleChange={this.enterStockName}/>
+        <Search change={this.enterStockName} 
+          handleChange={this.enterStockName}/>
         {this.state.showStockDetails? null :this.state.stocks.map((current) => {
                   return <Stocks key={current} 
                   name={current} 

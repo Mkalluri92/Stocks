@@ -1,15 +1,23 @@
 import React from 'react';
-import Highcharts from 'highcharts'
-import HighchartsReact from 'highcharts-react-official'
-
-
+import Highcharts from 'highcharts';
+import HighchartsReact from 'highcharts-react-official';
+import classes from './StockDetails.module.css';
 
 const StockDetails = (props) => {
     console.log(props.data);
     let options;
     let stockPriceTime;
+    let diffInPrice;
+    let color;
+    let profitOrLossSymbol;
     if (props.data) {
-        stockPriceTime = props.data.data.chart.result[0].timestamp.map((current) => {
+        debugger;
+        diffInPrice = (props.data.meta.regularMarketPrice - 
+                        props.data.meta.chartPreviousClose);
+        profitOrLossSymbol = diffInPrice>0 ? '+': '';
+        color = diffInPrice>0? 'green': 'red';
+        console.log(color);
+        stockPriceTime = props.data.timestamp.map((current) => {
             var date = new Date(current * 1000);
             // Hours part from the timestamp
             var hours = date.getHours();
@@ -34,7 +42,7 @@ const StockDetails = (props) => {
                 title: {
                     text: 'Time'
                 },
-                minTickInterval: props.data.data.chart.result[0].indicators.quote[0].open.length/4,
+                minTickInterval: props.data.indicators.quote[0].open.length/4,
                 categories: stockPriceTime,
             },
             yAxis: {
@@ -44,7 +52,8 @@ const StockDetails = (props) => {
             },
             series: [{
                 name: "Stock Data",
-                data: props.data.data.chart.result[0].indicators.quote[0].open
+                color: color,
+                data: props.data.indicators.quote[0].open
             }],
             legend: {
                 title: {
@@ -77,7 +86,25 @@ const StockDetails = (props) => {
     }
     return (
         props.data? (<div>
-            <div>{props.data.data.chart.result[0].meta.symbol}</div>
+            <div className={classes.details}>
+                <span className={classes.name}>
+                    {props.data.meta.symbol}</span>
+                <br />
+                <div className={classes.priceDetails}>
+                    <span className={classes.price}>
+                        {props.data.meta.regularMarketPrice}</span>
+                    <span className = {color=="red"? classes.red : classes.green} >
+                        {profitOrLossSymbol}
+                        {diffInPrice.toFixed(2)}</span>
+                    <span className = {color=="red"? classes.red : classes.green} >
+                        ({profitOrLossSymbol}
+                        {`${(diffInPrice / props.data.meta.regularMarketPrice * 100).toFixed(2)}%)`} 
+                    </span>
+                </div>
+            </div>
+            <div>
+                <span></span>
+            </div>
             <HighchartsReact
                 highcharts={Highcharts}
                 options={options}

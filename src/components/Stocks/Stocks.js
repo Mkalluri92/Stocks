@@ -17,7 +17,7 @@ class Stocks extends Component {
             method: 'get'
         }).then(response => {
             this.setState({
-                data : response,
+                data : response.data.chart.result[0],
             });
         }).catch(error => {
             console.error(error.message);

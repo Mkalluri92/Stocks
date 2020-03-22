@@ -1,0 +1,36 @@
+@import url(https://fonts.googleapis.com/css?family=Alfa+Slab+One+Text&display=swap);
+
+.details{
+    margin: 30px;
+}
+
+.name {
+    font-weight: bold;
+    font-size: large;
+    font-family: 'Alfa Slab One';
+}
+
+.priceDetails {
+    margin-top: 20px;
+}
+
+.price {
+    margin-top: 30px;  
+    font-weight: bolder;
+    font-size: xx-large;
+    font-family: 'Alfa Slab One';
+}
+
+.red {
+    color: red;
+    margin-left: 10px;
+    font-weight: bolder;
+    font-size: larger;
+}
+
+.green {
+    color: green;
+    margin-left: 10px;
+    font-weight: bolder;
+    font-size: larger;
+}
