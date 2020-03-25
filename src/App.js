@@ -4,6 +4,7 @@ import Search from './components/Search/Search';
 import Header from './components/Header/Header';
 import Stocks from './components/Stocks/Stocks';
 import StockNews from './components/StockNews/StockNews';
+import axios from 'axios';
 
 class App extends Component {
   
@@ -11,32 +12,50 @@ class App extends Component {
     stocks: ["PANW", "EGHT", "CSCO", "AVGO", "W", "TSLA", 
               "UVXY", "WDAY", "AAPL", "GOOGL", "AMD", "MSFT"],
     stockName: null,
-    showStockDetails: false
+    showStockDetails: false,
+    stockPredict: null
   }
 
+
+  handleChange = async (event) => {
+    event.persist();
+    await axios({
+      url: `http://localhost:8080/v1/stock_name?stock=${event.target.value}`,
+      method: 'get'
+    }).then(response => {
+      this.setState({
+        stockPredict: response.data.quotes,
+        stockName: event.target.value
+      })
+    }).catch(error => {
+        console.error(error.message);
+    })
+  }
+
+
   enterStockName = (event) => {
-    //debugger;
     if(event.keyCode === 13) {
       this.setState({
-        stockName: event.target.value,
         showStockDetails: true
       })
     }
   }
 
   shouldComponentUpdate(nextProps, nextState){
-    if(nextState.showStockDetails) {
+    if((nextState.showStockDetails) || (nextState.stockPredict !== null)) {
       return true
     }
     return false;
   }
 
   render() {
+    console.log(this.state);
     return (
       <React.Fragment>
         <Header />
-        <Search change={this.enterStockName} 
-          handleChange={this.enterStockName}/>
+        <Search enterStockName={this.enterStockName} 
+          handleChange={this.handleChange}
+          predictName={this.state.stockPredict}/>
         {this.state.showStockDetails? null :this.state.stocks.map((current) => {
                   return <Stocks key={current} 
                   name={current} 
@@ -44,9 +63,8 @@ class App extends Component {
               })}
         
         {(this.state.showStockDetails)? 
-          <HandleError>
             <Stocks name={this.state.stockName}
-          showDetails={this.state.showStockDetails}> </Stocks> </HandleError>:
+          showDetails={this.state.showStockDetails}> </Stocks>:
          null}
          {this.state.showStockDetails? null: <StockNews />}
       </React.Fragment>

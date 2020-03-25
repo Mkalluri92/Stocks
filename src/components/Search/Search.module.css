@@ -37,3 +37,38 @@ input[type="text"] {
     width: 30px;
     height: 20px;
 }
+
+.prediction {
+    display: block;
+    position: absolute;
+    background-color: white;
+    left: 25%;
+    top: 20%;
+    width: 41%;
+    border: 1px;
+    border-radius: 5px;
+    border-style: groove;
+    z-index: 100;
+}
+
+.predictName {
+    display: block;
+    padding: 10px;
+    font-size: medium;
+}
+
+.predictName:hover {
+    cursor: pointer;
+    background: rgb(186, 218, 240);
+}
+
+.symbol {
+    display: inline-block;
+    width: 18%;
+    margin-right: 25px;
+    text-overflow: ellipsis;
+  
+    /* Required for text-overflow to do anything */
+    white-space: nowrap;
+    overflow: hidden;
+}
