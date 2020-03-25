@@ -4,10 +4,6 @@ import { Sparklines, SparklinesLine } from 'react-sparklines';
 
 
 class Stock extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     shouldComponentUpdate(prevProps) {
         if(prevProps.data.indicators.quote[0].open.length ===
             this.props.data.indicators.quote[0].open.length) {

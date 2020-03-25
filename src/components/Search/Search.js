@@ -8,7 +8,7 @@ const Search = (props) => {
     return (
         <div className={classes.search}>
             <input type="text"
-                className={classes.searchInput} type="text" 
+                className={classes.searchInput}
                 placeholder="Enter the Company name or Stock symbol"
                 onChange= {props.handleChange}
                 onKeyDown={props.change}>

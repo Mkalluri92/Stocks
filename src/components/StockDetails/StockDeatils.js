@@ -4,46 +4,63 @@ import HighchartsReact from 'highcharts-react-official';
 import classes from './StockDetails.module.css';
 
 const StockDetails = (props) => {
-    console.log(props.data);
     let options;
     let stockPriceTime;
     let diffInPrice;
     let color;
     let profitOrLossSymbol;
-    if (props.data) {
-        debugger;
-        diffInPrice = (props.data.meta.regularMarketPrice - 
-                        props.data.meta.chartPreviousClose);
+    let ranges = ['1 day','5 days','1 month','6 months','YTD','1 year','5 years','Max'];
+    let rangeSelectedDecode = {
+        '1 day': '1d',
+        '5 days': '5d',
+        '1 month': '1mo',
+        '6 months': '6mo',
+        'YTD': 'ytd',
+        '1 year': '1y',
+        '5 years': '5y',
+        'Max': 'max'
+    }
+    if (props.data.data) {
+        diffInPrice = (props.data.data.meta.regularMarketPrice - 
+                        props.data.data.meta.chartPreviousClose);
         profitOrLossSymbol = diffInPrice>0 ? '+': '';
         color = diffInPrice>0? 'green': 'red';
-        console.log(color);
-        stockPriceTime = props.data.timestamp.map((current) => {
-            var date = new Date(current * 1000);
-            // Hours part from the timestamp
-            var hours = date.getHours();
-            // Minutes part from the timestamp
-            var minutes = "0" + date.getMinutes();
- 
-           // Will display time in 10:30 format
-            var formattedTime = hours + ':' + minutes.substr(-2);
 
-            return formattedTime;
+        stockPriceTime = props.data.data.timestamp.map((current) => {
+            let date = new Date(current * 1000);
+            let year = date.getFullYear();
+            let month = date.getMonth();
+            let day = date.getDate();
+            // Hours part from the timestamp
+            let hours = date.getHours();
+            
+            // Minutes part from the timestamp
+            let minutes = "0" + date.getMinutes();  
+           
+            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "June",
+            "July", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+            // Will display time in 10:30 format
+            var formattedTime = {
+                '1d': (hours >= 12 ? (hours + ':' + minutes.substr(-2) +' PM'):(hours + ':' + minutes.substr(-2) +' AM')),
+                '5d': monthNames[month]+' '+day,
+                '1mo': monthNames[month]+' '+day,
+                '6mo': monthNames[month]+' '+year,
+                'ytd': monthNames[month]+' '+day,
+                '1y': monthNames[month]+' '+year,
+                '5y': year,
+                'max': year
+            }
+            return formattedTime[props.data.range];
         })
 
         options = {
             title: {
-                text: 'Stock Price'
-            },
-        
-            subtitle: {
-                text: 'Source: Yahoo Finance'
+                text: ''
             },
             xAxis: {
-                title: {
-                    text: 'Time'
-                },
-                minTickInterval: props.data.indicators.quote[0].open.length/4,
-                categories: stockPriceTime,
+                minTickInterval: props.data.data.indicators.quote[0].open.length/4,
+                categories: stockPriceTime
             },
             yAxis: {
                 title: {
@@ -53,7 +70,7 @@ const StockDetails = (props) => {
             series: [{
                 name: "Stock Data",
                 color: color,
-                data: props.data.indicators.quote[0].open
+                data: props.data.data.indicators.quote[0].open
             }],
             legend: {
                 title: {
@@ -66,10 +83,8 @@ const StockDetails = (props) => {
             },
             tooltip: {
                 formatter: function() {
-                 return  this.series.name +
-                        '</b><br/>Price$: '+ this.y.toFixed(2) +
-                         '</b><br/>Time: '+  this.x;
-                }
+                 return this.y.toFixed(2) + ' USD ' + this.x
+                    }
             },
             plotOptions: {
                 spline: {
@@ -85,31 +100,38 @@ const StockDetails = (props) => {
         }
     }
     return (
-        props.data? (<div>
+        props.data.data? (<React.Fragment>
             <div className={classes.details}>
                 <span className={classes.name}>
-                    {props.data.meta.symbol}</span>
+                    {props.data.data.meta.symbol}</span>
                 <br />
                 <div className={classes.priceDetails}>
                     <span className={classes.price}>
-                        {props.data.meta.regularMarketPrice}</span>
-                    <span className = {color=="red"? classes.red : classes.green} >
+                        {props.data.data.meta.regularMarketPrice}</span>
+                    <span className = {color === "red"? classes.red : classes.green} >
                         {profitOrLossSymbol}
                         {diffInPrice.toFixed(2)}</span>
-                    <span className = {color=="red"? classes.red : classes.green} >
+                    <span className = {color === "red"? classes.red : classes.green} >
                         ({profitOrLossSymbol}
-                        {`${(diffInPrice / props.data.meta.regularMarketPrice * 100).toFixed(2)}%)`} 
+                        {`${(diffInPrice / props.data.data.meta.regularMarketPrice * 100).toFixed(2)}%)`} 
                     </span>
                 </div>
             </div>
-            <div>
-                <span></span>
+            <div className={classes.validRanges}>
+                {ranges.map((current) => {
+                    return <span key={current}
+                            onClick={props.handleRange}
+                            className={((props.data) && 
+                                (rangeSelectedDecode[current] === props.data.range))?
+                                    classes.rangeSelected: classes.range}>
+                        {current}</span>
+                })}
             </div>
             <HighchartsReact
                 highcharts={Highcharts}
                 options={options}
             />
-        </div>): null
+        </React.Fragment>): null
     )
 }
 

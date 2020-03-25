@@ -1,13 +1,14 @@
-@import url(https://fonts.googleapis.com/css?family=Alfa+Slab+One+Text&display=swap);
+@import url(https://fonts.googleapis.com/css?family=Fira+Sans+Text&display=swap);
 
 .details{
-    margin: 30px;
+    margin: 50px;
 }
 
 .name {
     font-weight: bold;
     font-size: large;
-    font-family: 'Alfa Slab One';
+    color: rgb(7, 173, 214);
+    font-family: 'Fira Sans', sans-serif;
 }
 
 .priceDetails {
@@ -15,10 +16,9 @@
 }
 
 .price {
-    margin-top: 30px;  
+    margin-top: 20px;  
     font-weight: bolder;
-    font-size: xx-large;
-    font-family: 'Alfa Slab One';
+    font-size: xx-large;    
 }
 
 .red {
@@ -33,4 +33,23 @@
     margin-left: 10px;
     font-weight: bolder;
     font-size: larger;
+}
+
+.validRanges {
+    position: relative;
+    left: 30%;
+    margin: 30px;
+
+}
+
+.range {
+    margin: 10px;
+    font-weight: bolder;
+}
+
+.rangeSelected, .range:hover {
+    color:rgb(16, 197, 221);
+    cursor: pointer;
+    margin: 10px;
+    font-weight: bolder;
 }

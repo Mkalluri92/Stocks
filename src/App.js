@@ -6,9 +6,7 @@ import Stocks from './components/Stocks/Stocks';
 import StockNews from './components/StockNews/StockNews';
 
 class App extends Component {
-  constructor(props){
-    super(props);
-  }
+  
   state = {
     stocks: ["PANW", "EGHT", "CSCO", "AVGO", "W", "TSLA", 
               "UVXY", "WDAY", "AAPL", "GOOGL", "AMD", "MSFT"],
@@ -19,7 +17,6 @@ class App extends Component {
   enterStockName = (event) => {
     //debugger;
     if(event.keyCode === 13) {
-      console.log(event.target.value);
       this.setState({
         stockName: event.target.value,
         showStockDetails: true
@@ -35,7 +32,6 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.state);
     return (
       <React.Fragment>
         <Header />
@@ -48,8 +44,9 @@ class App extends Component {
               })}
         
         {(this.state.showStockDetails)? 
-          <Stocks name={this.state.stockName}
-          showDetails={this.state.showStockDetails}> </Stocks>:
+          <HandleError>
+            <Stocks name={this.state.stockName}
+          showDetails={this.state.showStockDetails}> </Stocks> </HandleError>:
          null}
          {this.state.showStockDetails? null: <StockNews />}
       </React.Fragment>
