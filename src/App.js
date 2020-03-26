@@ -5,6 +5,7 @@ import Header from './components/Header/Header';
 import Stocks from './components/Stocks/Stocks';
 import StockNews from './components/StockNews/StockNews';
 import axios from 'axios';
+import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 
 class App extends Component {
   
@@ -23,6 +24,7 @@ class App extends Component {
       url: `http://localhost:8080/v1/stock_name?stock=${event.target.value}`,
       method: 'get'
     }).then(response => {
+      console.log(response);
       this.setState({
         stockPredict: response.data.quotes,
         stockName: event.target.value
@@ -61,13 +63,14 @@ class App extends Component {
   render() {
     console.log(this.state);
     return (
-      <React.Fragment>
+      <ErrorBoundary>
         <Header />
         <Search enterStockName={this.enterStockName} 
           handleChange={this.handleChange}
           predictName={this.state.stockPredict}
           click= {this.getStockName}
           showPredictions = {!(this.state.showStockDetails)}/>
+      
         {this.state.showStockDetails? null :this.state.stocks.map((current) => {
                   return <Stocks key={current} 
                   name={current} 
@@ -75,11 +78,11 @@ class App extends Component {
               })}
         
         {(this.state.showStockDetails)? 
-            <Stocks name={this.state.stockName}
-          showDetails={this.state.showStockDetails}> </Stocks>:
+              <Stocks name={this.state.stockName}
+          showDetails={this.state.showStockDetails}> </Stocks> :
          null}
          {this.state.showStockDetails? null: <StockNews />}
-      </React.Fragment>
+      </ErrorBoundary>
      
     )
   }

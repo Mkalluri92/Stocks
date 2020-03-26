@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Stock from './Stock/Stock';
 import axios from 'axios';
 import StockDetails from './../StockDetails/StockDeatils';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 
 
 class Stocks extends Component {
@@ -9,22 +10,31 @@ class Stocks extends Component {
     state = {
         data: null,
         interval: '2m',
-        range: '1d'
+        range: '1d',
+        error: false
     }
     
     getStocks = async () => {
         //console.log(this.props);
         //console.log(this.state);
-        await axios({
-            url: `http://localhost:8080/v1/stock_details?stock=${this.props.name}&interval=${this.state.interval}&range=${this.state.range}`,
-            method: 'get'
-        }).then(response => {
-            this.setState({
-                data : response.data.chart.result[0],
-            });
-        }).catch(error => {
-            console.error(error.message);
-        })
+        if(this.state.error){
+            return null
+        }
+        else {
+            await axios({
+                url: `http://localhost:8080/v1/stock_details?stock=${this.props.name}&interval=${this.state.interval}&range=${this.state.range}`,
+                method: 'get'
+            }).then(response => {
+                this.setState({
+                    data : response.data.chart.result[0],
+                });
+            }).catch(error => {
+                this.setState({
+                    error: true,
+                    errorMessage: `Error getting stock details for ${this.props.name}`
+                })
+            })
+        }
     };
 
     handleValidRange= (event) => {
@@ -89,7 +99,8 @@ class Stocks extends Component {
    
     render() {
         return(
-            <React.Fragment>
+            (this.state.error)? <p>{this.state.errorMessage}</p>:
+            <ErrorBoundary>
                 {((this.state.data !== null) && !(this.props.showDetails))?
                         <Stock 
                             data={this.state.data}
@@ -101,7 +112,7 @@ class Stocks extends Component {
                             handleRange ={this.handleValidRange}>
                         </StockDetails>: null 
                 }
-        </React.Fragment>
+        </ErrorBoundary>
     )}
 }
 

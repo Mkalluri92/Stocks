@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import classes from './Stock.module.css';
 import { Sparklines, SparklinesLine } from 'react-sparklines';
+import ErrorBoundary from '../../ErrorBoundary/ErrorBoundary';
 
 
 class Stock extends Component {
@@ -56,13 +57,13 @@ class Stock extends Component {
         }
 
         return (
-            <React.Fragment>
+            <ErrorBoundary>
                 <div className={classes.mainstock}>
                     <span className={classes.name}>
                         {this.props.name}</span>
                         {stock}
                 </div>
-            </React.Fragment> 
+            </ErrorBoundary> 
         )
     }
 }

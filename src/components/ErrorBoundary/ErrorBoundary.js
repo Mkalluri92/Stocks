@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
-class HandleError extends Component {
+class ErrorBoundary extends Component {
+  debugger;
     constructor(props) {
      super(props);
      this.state = {
@@ -25,4 +26,4 @@ class HandleError extends Component {
     }
 }
 
-export default HandleError;
+export default ErrorBoundary;

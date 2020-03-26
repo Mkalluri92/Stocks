@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import News from './News/News';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 
 class StockNews extends Component {
     state= {
@@ -36,9 +37,9 @@ class StockNews extends Component {
         }
 
     return (
-        <React.Fragment>
+        <ErrorBoundary>
            {news}
-        </React.Fragment>
+        </ErrorBoundary>
     )
     }
 }

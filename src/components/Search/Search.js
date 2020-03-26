@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import classes from './Search.module.css';
 import { FaSearch } from 'react-icons/fa';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 
 
 class Search extends Component {
@@ -8,7 +9,7 @@ class Search extends Component {
     render() {
         console.log(this.props);
         return (
-            <React.Fragment>
+            <ErrorBoundary>
                 <div className={classes.search}>
                     <input type="text"
                         className={classes.searchInput}
@@ -32,7 +33,7 @@ class Search extends Component {
                     </div> : null
                 }
                 
-            </React.Fragment>
+            </ErrorBoundary>
         )
     }
 }
