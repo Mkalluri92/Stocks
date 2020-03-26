@@ -28,7 +28,10 @@ class App extends Component {
         stockName: event.target.value
       })
     }).catch(error => {
-        console.error(error.message);
+      console.log(error);
+      this.setState({
+        stockPredict: null
+      })
     })
   }
 
@@ -36,17 +39,24 @@ class App extends Component {
   enterStockName = (event) => {
     if(event.keyCode === 13) {
       this.setState({
-        showStockDetails: true
+        showStockDetails: true,
+        stockName: event.target.value
+      })
+    } else {
+      this.setState({
+        showStockDetails: false
       })
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState){
-    if((nextState.showStockDetails) || (nextState.stockPredict !== null)) {
-      return true
-    }
-    return false;
+  getStockName = (event) => {
+    console.log(event.currentTarget);
+    this.setState({
+      stockName: event.currentTarget.children[0].innerHTML,
+      showStockDetails: true,
+    })
   }
+
 
   render() {
     console.log(this.state);
@@ -55,7 +65,9 @@ class App extends Component {
         <Header />
         <Search enterStockName={this.enterStockName} 
           handleChange={this.handleChange}
-          predictName={this.state.stockPredict}/>
+          predictName={this.state.stockPredict}
+          click= {this.getStockName}
+          showPredictions = {!(this.state.showStockDetails)}/>
         {this.state.showStockDetails? null :this.state.stocks.map((current) => {
                   return <Stocks key={current} 
                   name={current} 

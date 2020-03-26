@@ -4,8 +4,9 @@ import { FaSearch } from 'react-icons/fa';
 
 
 class Search extends Component {
-
+    
     render() {
+        console.log(this.props);
         return (
             <React.Fragment>
                 <div className={classes.search}>
@@ -17,16 +18,20 @@ class Search extends Component {
                     </input>
                     <FaSearch className={classes.searchIcon}/>
                 </div>
-                {this.props.predictName === null? null: 
+                {((this.props.predictName !== null) && (this.props.showPredictions))? 
                     <div className={classes.prediction}>
                         {this.props.predictName.map((current, index) => {
-                            return <div key={index} className={classes.predictName}>
+                            return <div key={index} 
+                            className={this.props.showPredictions? classes.predictName:
+                            classes.showNothing}
+                            onClick={this.props.click}>
                                 <b className={classes.symbol}>{current.symbol}</b>  
                                 <span>{current.shortname}</span>
                             </div>
                         })}
-                    </div>
+                    </div> : null
                 }
+                
             </React.Fragment>
         )
     }

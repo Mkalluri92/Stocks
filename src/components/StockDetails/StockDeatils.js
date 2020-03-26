@@ -26,6 +26,8 @@ const StockDetails = (props) => {
         profitOrLossSymbol = diffInPrice>0 ? '+': '';
         color = diffInPrice>0? 'green': 'red';
 
+        console.log(props.data);
+
         stockPriceTime = props.data.data.timestamp.map((current) => {
             let date = new Date(current * 1000);
             let year = date.getFullYear();
