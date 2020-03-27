@@ -25,7 +25,7 @@ const StockDetails = (props) => {
         diffInPrice = (props.data.data.meta.regularMarketPrice - 
                         props.data.data.meta.chartPreviousClose);
         profitOrLossSymbol = diffInPrice>0 ? '+': '';
-        color = diffInPrice>0? 'green': 'red';
+        color = diffInPrice>=0? 'green': 'red';
 
         console.log(props.data);
 

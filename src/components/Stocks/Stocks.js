@@ -89,7 +89,7 @@ class Stocks extends Component {
             setInterval(() => {
                 var date = new Date();
                 if((date.getHours() > 7 && date.getMinutes() > 0 && !(this.state.error)) && 
-                        (date.getHours() < 20 && date.getMinutes() > 0)){
+                        (date.getHours() < 13 && date.getMinutes() > 0)){
                     this.getStocks();
                 }
             }, 10000);
@@ -109,7 +109,7 @@ class Stocks extends Component {
    
     render() {
         console.log(this.props);
-        console.log(this.state.error);
+        console.log(this.state);
         return(
             (this.state.error)? <div className={classes.error}>{this.state.errorMessage}</div>:
             <ErrorBoundary>

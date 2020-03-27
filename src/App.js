@@ -37,14 +37,16 @@ class App extends Component {
     } else {
       this.setState({
         stockPredict: null,
-        error: true
+        error: true,
+        showStockDetails: false
       })
     }
     }).catch(error => {
       console.log('error getting');
       this.setState({
         stockPredict: null,
-        error: true
+        error: true,
+        showStockDetails: false
       })
     })
   }
@@ -62,7 +64,8 @@ class App extends Component {
         })
       } else {
         this.setState({
-          showPredictions: true
+          showPredictions: true,
+          showDetails: false
         })
       }
   }
