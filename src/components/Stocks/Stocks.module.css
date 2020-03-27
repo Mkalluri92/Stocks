@@ -1,0 +1,12 @@
+.error {
+    background-color: rgb(236, 137, 137);
+    display: inline-block;
+    position: relative;
+    left: 30%;
+    color: black;
+    margin: 20px;
+    width: 25%;
+    padding: 10px;
+    font-size: larger;
+
+}

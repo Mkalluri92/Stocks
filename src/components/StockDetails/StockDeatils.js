@@ -4,6 +4,7 @@ import HighchartsReact from 'highcharts-react-official';
 import classes from './StockDetails.module.css';
 
 const StockDetails = (props) => {
+    console.log('stcok Details');
     let options;
     let stockPriceTime;
     let diffInPrice;

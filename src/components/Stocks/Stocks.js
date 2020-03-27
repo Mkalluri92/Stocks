@@ -3,6 +3,7 @@ import Stock from './Stock/Stock';
 import axios from 'axios';
 import StockDetails from './../StockDetails/StockDeatils';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+import classes from './Stocks.module.css';
 
 
 class Stocks extends Component {
@@ -15,26 +16,31 @@ class Stocks extends Component {
     }
     
     getStocks = async () => {
-        //console.log(this.props);
-        //console.log(this.state);
-        if(this.state.error){
-            return null
-        }
-        else {
+        console.log('getstcoks runinhg');
             await axios({
                 url: `http://localhost:8080/v1/stock_details?stock=${this.props.name}&interval=${this.state.interval}&range=${this.state.range}`,
                 method: 'get'
             }).then(response => {
-                this.setState({
-                    data : response.data.chart.result[0],
-                });
+                console.log(response.data.chart.result[0].meta);
+                if(response.data.chart.result[0].meta && response.data.chart.result[0].indicators
+                    && response.data.chart.result[0].timestamp){
+                        this.setState({
+                            data : response.data.chart.result[0],
+                            error: false,
+                            errorMessage: null
+                        });
+                } else {
+                    this.setState({
+                        error: true,
+                        errorMessage: `Error getting stock details for ${this.props.name}`
+                    })
+                }
             }).catch(error => {
                 this.setState({
                     error: true,
                     errorMessage: `Error getting stock details for ${this.props.name}`
                 })
             })
-        }
     };
 
     handleValidRange= (event) => {
@@ -79,13 +85,15 @@ class Stocks extends Component {
 
     componentDidMount() {
         this.getStocks();
-        setInterval(() => {
-            var date = new Date();
-            if((date.getHours() > 7 && date.getMinutes() > 0) && 
-                    (date.getHours() < 13 && date.getMinutes() > 0)){
-                this.getStocks();
-            }
-        }, 10000);
+        if(this.props.showError === false){
+            setInterval(() => {
+                var date = new Date();
+                if((date.getHours() > 7 && date.getMinutes() > 0 && !(this.state.error)) && 
+                        (date.getHours() < 20 && date.getMinutes() > 0)){
+                    this.getStocks();
+                }
+            }, 10000);
+        }
     }
 
     componentDidUpdate(prevProps, prevState){
@@ -95,11 +103,15 @@ class Stocks extends Component {
             //console.log('didupdate');
         }
     }
+
+
    
    
     render() {
+        console.log(this.props);
+        console.log(this.state.error);
         return(
-            (this.state.error)? <p>{this.state.errorMessage}</p>:
+            (this.state.error)? <div className={classes.error}>{this.state.errorMessage}</div>:
             <ErrorBoundary>
                 {((this.state.data !== null) && !(this.props.showDetails))?
                         <Stock 
@@ -107,10 +119,10 @@ class Stocks extends Component {
                             name={this.props.name}>
                         </Stock> : null
                 }
-                {(this.props.showDetails) ?
+                {this.props.showDetails === true && this.props.showError === false && this.state.error === false?
                         <StockDetails data={this.state}
                             handleRange ={this.handleValidRange}>
-                        </StockDetails>: null 
+                        </StockDetails>: null
                 }
         </ErrorBoundary>
     )}

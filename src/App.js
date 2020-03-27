@@ -14,48 +14,66 @@ class App extends Component {
               "UVXY", "WDAY", "AAPL", "GOOGL", "AMD", "MSFT"],
     stockName: null,
     showStockDetails: false,
-    stockPredict: null
+    stockPredict: null,
+    error: false
   }
 
 
   handleChange = async (event) => {
+    console.log('handlechange');
     event.persist();
     await axios({
       url: `http://localhost:8080/v1/stock_name?stock=${event.target.value}`,
       method: 'get'
     }).then(response => {
-      console.log(response);
-      this.setState({
+      console.log(response.data.quotes.length);
+      if(response.data.quotes.length>0) {
+        this.setState({
         stockPredict: response.data.quotes,
-        stockName: event.target.value
-      })
-    }).catch(error => {
-      console.log(error);
+        stockName: event.target.value,
+        showStockDetails: false,
+        error: false
+      }) 
+    } else {
       this.setState({
-        stockPredict: null
+        stockPredict: null,
+        error: true
+      })
+    }
+    }).catch(error => {
+      console.log('error getting');
+      this.setState({
+        stockPredict: null,
+        error: true
       })
     })
   }
 
 
   enterStockName = (event) => {
-    if(event.keyCode === 13) {
-      this.setState({
-        showStockDetails: true,
-        stockName: event.target.value
-      })
-    } else {
-      this.setState({
-        showStockDetails: false
-      })
-    }
+    console.log('enterStockname');
+    console.log('stockName:' + event.target.value)
+      if((event.keyCode === 13 )) {
+         console.log('chaging');
+        this.setState({
+          showStockDetails: true,
+          stockName: event.target.value,
+          showPredictions: false
+        })
+      } else {
+        this.setState({
+          showPredictions: true
+        })
+      }
   }
 
   getStockName = (event) => {
+    console.log('getstockname');
     console.log(event.currentTarget);
     this.setState({
       stockName: event.currentTarget.children[0].innerHTML,
       showStockDetails: true,
+      showPredictions: false
     })
   }
 
@@ -69,17 +87,20 @@ class App extends Component {
           handleChange={this.handleChange}
           predictName={this.state.stockPredict}
           click= {this.getStockName}
-          showPredictions = {!(this.state.showStockDetails)}/>
+          showPredictions = {this.state.showPredictions}/>
       
-        {this.state.showStockDetails? null :this.state.stocks.map((current) => {
+        {(this.state.showStockDetails)? null : 
+            (this.state.stocks.map((current) => {
                   return <Stocks key={current} 
                   name={current} 
-                  showDetails= {this.state.showStockDetails}/> 
-              })}
+                  showDetails= {this.state.showStockDetails}
+                  showError = {this.state.error}/> 
+              }))}
         
         {(this.state.showStockDetails)? 
               <Stocks name={this.state.stockName}
-          showDetails={this.state.showStockDetails}> </Stocks> :
+          showDetails={this.state.showStockDetails}
+          showError = {this.state.error}> </Stocks> :
          null}
          {this.state.showStockDetails? null: <StockNews />}
       </ErrorBoundary>
