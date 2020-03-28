@@ -19,7 +19,7 @@ class Search extends Component {
                     </input>
                     <FaSearch className={classes.searchIcon}/>
                 </div>
-                {((this.props.predictName !== null) && (this.props.showPredictions))? 
+                {((this.props.predictName !== null) && (this.props.showPredictions) &&(this.props.predictName.length>0))? 
                     <div className={classes.prediction}>
                         {this.props.predictName.map((current, index) => {
                             return <div key={index} 

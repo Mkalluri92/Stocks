@@ -104,7 +104,14 @@ class Stocks extends Component {
         }
     }
 
-
+shouldComponentUpdate(nextProps, nextState) {
+    console.log(nextProps.name);
+    console.log(this.props.name);
+    if(nextProps.name !== this.props.name){
+        return true
+    }
+    return true
+}
    
    
     render() {

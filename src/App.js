@@ -27,27 +27,32 @@ class App extends Component {
       method: 'get'
     }).then(response => {
       console.log(response.data.quotes.length);
+      console.log(event.target.value);
       if(response.data.quotes.length>0) {
         this.setState({
         stockPredict: response.data.quotes,
-        stockName: event.target.value,
-        showStockDetails: false,
         error: false
       }) 
     } else {
       this.setState({
         stockPredict: null,
         error: true,
-        showStockDetails: false
       })
     }
     }).catch(error => {
       console.log('error getting');
-      this.setState({
-        stockPredict: null,
-        error: true,
-        showStockDetails: false
-      })
+      if(event.target.value === ''){
+        this.setState({
+          stockPredict: null,
+          showStockDetails: false,
+          error: true,
+        })
+      } else {
+        this.setState({
+          stockPredict: null,
+          error: true,
+        })
+      }
     })
   }
 
@@ -90,7 +95,8 @@ class App extends Component {
           handleChange={this.handleChange}
           predictName={this.state.stockPredict}
           click= {this.getStockName}
-          showPredictions = {this.state.showPredictions}/>
+          showPredictions = {this.state.showPredictions}
+          error = {this.state.error}/>
       
         {(this.state.showStockDetails)? null : 
             (this.state.stocks.map((current) => {
