@@ -54,7 +54,7 @@
     "react": "^16.13.0",
     "react-app-polyfill": "^1.0.6",
     "react-chartist": "^0.14.3",
-    "react-dev-utils": "^10.2.0",
+    "react-dev-utils": "^11.0.4",
     "react-dom": "^16.13.0",
     "react-icons": "^3.9.0",
     "react-sparklines": "^1.7.0",
